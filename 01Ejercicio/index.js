@@ -1,15 +1,4 @@
-import { Inicio, } from "./components.js"
-
-/* function Layout() {
-    return {
-        view: ({children}) => [
-            m("header"),
-            m("main"),
-            children,
-            m("aside")
-        ]
-    }
-} */
+import { Inicio, } from "./components.js";
 
 const routes = {
     "/Inicio": { view: () =>  m(Inicio)},
