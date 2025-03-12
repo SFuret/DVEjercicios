@@ -190,10 +190,9 @@ function Aside() {
   };
 }
 
-
 //==========================MAIN===========================================
 
-//*****CARD*********/
+//***** CARD *********/
 let tarjetas = [
   { titulo: "Deportivas Mujer", urlImagen: "img/deportivasMujer.jpg", descripcion: "Similares a los de hombre, pero con diseños más estilizados, colores variados y ajuste adaptado a la anatomía femenina" },
   { titulo: "Deportivas Hombre", urlImagen: "img/deportivasHombre.jpg", descripcion: "Diseñados para comodidad y rendimiento, con materiales transpirables y suelas que amortiguan el impacto. Ideales para actividades físicas o uso diario" },
@@ -203,71 +202,64 @@ let tarjetas = [
   { titulo: "Bebés", urlImagen: "img/bebes.jpg", descripcion: "Ligeros, flexibles y con materiales suaves para proteger los pies delicados del bebé. Suelas antideslizantes para mayor seguridad" },
 ];
 
-
 function Card() {
-
   return {
-    data: tarjetas,
-    view: function () {
-      return this.data.map((tarjeta, index) =>
+    selectedIndex: null, // Estado para almacenar la tarjeta seleccionada
+    view: function (vnode) {
+      return tarjetas.map((tarjeta, index) =>
         m("div", {
-          id:`${index}`,//le pongo un id único a cada tarjeta
           style: {
             width: "30%",
             height: "50vh",
             textAlign: "center",
-            border: "2px solid black"
+            border: "2px solid black",
+            boxShadow: this.selectedIndex === index ? "0px 5px 5px green" : "none" // Sombra en la tarjeta seleccionada
           },
-          onclick: function(e){
-            document.getElementById("tarjetaSeleccionada").innerText=tarjeta.titulo;
-          }        
-        }, m("div", { //titulo
-          style: {
-            width: "100%",
-            height: "10vh",
-            backgroundColor: "#F2AB41",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderBottom: "2px solid black"
+          onclick: () => {
+            this.selectedIndex = index; // Guarda el índice de la tarjeta seleccionada
+            vnode.attrs.onCardSelect(tarjeta); // Notifica la selección al componente padre
+            m.redraw(); // Redibuja la vista
           }
-        }, tarjeta.titulo
-        ),
-          m( //contenedor Imagen
-            "div", {
+        },
+          m("div", { // Título
+            style: {
+              width: "100%",
+              height: "10vh",
+              backgroundColor: "#F2AB41",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderBottom: "2px solid black"
+            }
+          }, tarjeta.titulo),
+          m("div", { // Contenedor de la imagen
             style: {
               width: "100%",
               height: "30vh",
               borderBottom: "2px solid black"
             }
-          }, m(
-            "img", {
-            src: tarjeta.urlImagen,
-            style: {
-              width: "100%",
-              height: "100%"
-            }
           },
-          )
-          ),
-          m( //descripcion
-            "div",
-            {
+            m("img", {
+              src: tarjeta.urlImagen,
               style: {
                 width: "100%",
-                height: "10vh",
-                textAlign: "justify"
+                height: "100%"
               }
-            }, tarjeta.descripcion
-          )
-
-
-
-        ))
+            })
+          ),
+          m("div", { // Descripción
+            style: {
+              width: "100%",
+              height: "10vh",
+              textAlign: "justify"
+            }
+          }, tarjeta.descripcion)
+        ));
     }
   };
 }
-//***** FIN CARD*********/
+
+//***** FIN CARD *********/
 
 function Main() {
   return {
@@ -289,30 +281,27 @@ function Main() {
   };
 }
 
-function tarjetaSelecionada(){
-  return{
-    view: function(){      
-      return m("div",{
-       
-        style:{
-          width:"80%",
-          height:"15vh",
-          backgroundColor:"#96BFD9",
-          display:"flex",
-          flexDirection:"column",
-          alignItems:"center",
-          fontWeight:"bolder"
+function tarjetaSelecionada() {
+  return {
+    view: function (vnode) {
+      return m("div", { // Contenedor para mostrar la tarjeta seleccionada
+        style: {
+          width: "80%",
+          height: "15vh",
+          backgroundColor: "#96BFD9",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          fontWeight: "bolder"
         }
       },
-      m("p","Tarjeta seleccionada"),
-      m("p", {id:"tarjetaSeleccionada"})
-    )
+        m("p", "Tarjeta seleccionada"),
+        m("p", {}, vnode.attrs.selectedCard ? vnode.attrs.selectedCard.titulo : "No hay tarjeta seleccionada") // Muestra la tarjeta seleccionada
+      );
     }
-  }
+  };
 }
 
-//==========================fin MAIN===========================================
-//==========================FOOTER===========================================
 function Footer() {
   return {
     view: function () {
@@ -322,48 +311,55 @@ function Footer() {
           height: "20vh",
           backgroundColor: "#345573",
         }
-      },);
+      });
     }
   };
 }
-//==========================fin FOOTER===========================================
-//----------PÁGINA PRINCIPAL-----------
+
+//---------- PÁGINA PRINCIPAL -----------
 function Inicio() {
+  let selectedCard = null; // Estado global para la tarjeta seleccionada
+
+  function handleCardSelect(tarjeta) {
+    selectedCard = tarjeta;
+    m.redraw(); // Redibuja la vista cuando cambia la selección
+  }
+
   return {
     oncreate: () => {
       window.scrollTo(0, 0);
     },
-    view: () => m("div", //BODY
-      {
-        style: {
-          display: "flex",
-          flexWrap: "wrap",
-          margin: "0 auto",
-          padding: "opx",
-          overflowX: "scroll"
-        }
-      }, [
-      m(Header, [m(logo), m(menu), m(referencias)]),
-      m("div", { //encierra al Aside, Main, Aside
-        style: {
-          display: "flex",
-          width: "100%",
-          display: "flex",
-          flexWrap: "wrap",
-        }
-      }, m(Aside),
-        m(Main, [
-          m(Card),m(tarjetaSelecionada)
-        ]),
-        m(Aside),
-      ),
-      m(Footer)
-    ])
+    view: () => m("div", {
+      style: {
+        display: "flex",
+        flexWrap: "wrap",
+        margin: "0 auto",
+        padding: "0px",
+        overflowX: "scroll"
+      }
+    },
+      [
+        m(Header, [m(logo), m(menu), m(referencias)]),
+        m("div", { // Encierra al Aside, Main, Aside
+          style: {
+            display: "flex",
+            width: "100%",
+            flexWrap: "wrap",
+          }
+        },
+          m(Aside),
+          m(Main, [
+            m(Card, { onCardSelect: handleCardSelect }), // Pasamos la función de selección a Card
+            m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada
+          ]),
+          m(Aside),
+        ),
+        m(Footer)
+      ]
+    )
   };
 }
 
-// Montar la aplicación
-//m.mount(document.body, Inicio);
 
 
 export { Inicio };
