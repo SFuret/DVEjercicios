@@ -301,22 +301,146 @@ function tarjetaSelecionada() {
     }
   };
 }
+//=======================FIN MAIN=================================
+//================INICIO FOOTER===================================
+let datosFormulario = [
+  { nombre: 'Nombre: ', input: '' },
+  { nombre: 'Edad: ', input: '' },
+];
+
+let datosRespuestas = [
+  { nombre: 'Tu nombre es: ' },
+  { nombre: 'Tu edad es: ' },
+];
+function Formulario() {
+
+  return {
+
+    view: function () {
+      return m("div", { //padre formulario
+        style: {
+          display: "flex",
+          gap: "20%",
+          width: "80%",
+          height: "80%",
+          backgroundColor: "#303741",
+          color: "white"
+        }
+      },
+        m("div", {  //nivel1
+          style: {
+            width: "45%",
+            height: "100%",
+            borderRight: "2px solid black",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "1vh"
+          }
+        },
+          datosFormulario.map((inputFormulario, index) =>
+            m("div", {  //nivel2 contenedor de elementos del formulario dinámico
+              style: {
+                height: "20%",
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+              }
+            },
+              m("label", { //nivel3
+                style: {
+                  width: "20%",
+                  height: "100%",
+                  textAlign: "end",
+                }
+              },
+                inputFormulario.nombre),
+              m("input", {//nivel3
+                style: {
+                  height: "80%",                  
+                },
+                value: inputFormulario.input,
+                oninput: function (e) {
+                  datosFormulario[index].input = e.target.value;
+                }
+              },)
+            )
+
+          )
+        ),
+        m("div", {//nivel1
+          style:{
+            display: "flex",
+            flexDirection:"column",
+            justifyContent: "center",
+            width:"50%",
+            height:"100%",
+            gap:"1rem",
+            borderLeft: "2px solid black",
+          }
+        },
+        datosRespuestas.map((respuesta, pos) => m("div", { //nivel2
+          style: {
+            width: "100%",
+            height: "20%",
+            display: "flex",
+            justifyContent: "center",
+            gap:"10px"
+          }
+        },
+          m("label", //nivel3
+            {
+              style: {
+                height: "100%",
+                minWidth: "15%",
+                margin:"0",
+                padding:"0"
+              }
+            }, respuesta.nombre,
+          ),
+          m("p", { //nivel3
+            style: {
+              height: "100%",
+              width: "60%",
+              margin:"0",
+              padding:"0",
+            },
+          }, datosFormulario[pos]?.input || "")
+        ))
+
+      )
+        
+      )
+    }
+  }
+}
+
 
 function Footer() {
   return {
-    view: function () {
+    view: function (vnode) {
       return m("div", {
         style: {
           width: "100%",
           height: "20vh",
           backgroundColor: "#345573",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+
         }
-      });
+      }, vnode.children);
     }
   };
 }
 
-//---------- PÁGINA PRINCIPAL -----------
+
+//=================FIN FOOTER=====================================
+
+
+
+
+//============= PÁGINA PRINCIPAL ==============
 function Inicio() {
   let selectedCard = null; // Estado global para la tarjeta seleccionada
 
@@ -350,11 +474,11 @@ function Inicio() {
           m(Aside),
           m(Main, [
             m(Card, { onCardSelect: handleCardSelect }), // Pasamos la función de selección a Card
-            m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada
+            m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada , el primer selectedCard es el atributo del componente tarjetaSeleccionada
           ]),
           m(Aside),
         ),
-        m(Footer)
+        m(Footer, [m(Formulario)])
       ]
     )
   };

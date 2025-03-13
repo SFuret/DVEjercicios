@@ -1,7 +1,13 @@
 
 
 //==========================HEADER============
-function Header() {
+
+
+
+ //***********Inicio menú normal***********/
+
+function HeaderNormal() {
+  
   return {
     view: function (vnode) {
       return m("div", {
@@ -126,7 +132,6 @@ function referencias() {
   const sitios = [
     { nombre: "Facebook", logo: 'img/facebook.svg', href: 'https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F%3Flocale%3Des_ES' },
     { nombre: "Instagram", logo: 'img/instagram.svg', href: 'https://www.instagram.com/accounts/login/' },
-    //{nombre:"Facebook", url: m.trust('<i class="fa-brands fa-square-facebook"></i>')}
   ];
   return {
     data: sitios,
@@ -171,7 +176,121 @@ function referencias() {
   }
 }
 
+/**********Fin menú normal***********/
 
+/*********Inicio menú hamburguesa**********/
+let menuAbierto = false;  // Estado global para controlar si el menú está abierto o cerrado
+
+function HamburgerIcon() {
+  return {
+    view: function() {
+      return m("div", {
+        style: {
+          width: "30px",
+          height: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          cursor: "pointer"
+        },
+        onclick: function() {
+          menuAbierto = !menuAbierto; // Cambiar el estado del menú
+          m.redraw(); // Redibujar la interfaz para reflejar el cambio
+        }
+      },
+        m("div", { style: { width: "100%", height: "4px", backgroundColor: "black" } }),
+        m("div", { style: { width: "100%", height: "4px", backgroundColor: "black" } }),
+        m("div", { style: { width: "100%", height: "4px", backgroundColor: "black" } })
+      );
+    }
+  };
+}
+
+function HeaderBurger() {
+  let data = menuLI(); // Obtengo los datos del menú
+
+  return {
+    view: function() {
+      return m("div", {
+        style: {
+          width: "100%",
+          backgroundColor: "#345573",
+          padding: "2vh 0 2vh 1rem",
+          display: "flex",
+          flexDirection: "column",
+          position: "fixed",
+          zIndex: "5"
+        }
+      },
+        m(HamburgerIcon), // Icono de menú hamburguesa
+        menuAbierto && m("ul", {
+          style: {
+            width: "40%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1vh",
+            listStyle: "none",
+            padding: "0"
+          }
+        },
+          data.select.model.LIs.map((li) =>
+            m("li", {
+              style: {
+                width: "100%",
+                height:"5vh",
+              }
+            }, 
+              m("a", {
+                href: li.href,
+                style: {
+                  backgroundColor: "green",
+                  color: "white",
+                  textDecoration: "none",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "background-color 0.3s", 
+                  borderRadius: "4px",
+                },
+                onmouseover: function (e) {
+                  e.target.style.backgroundColor = "#F2AB41";
+                },
+                onmouseout: function (e) {
+                  e.target.style.backgroundColor = "green";
+                }
+              }, li.texto)
+            )
+          )
+        )
+      );
+    }
+  };
+}
+
+
+/************Fin menú hamburguesa*********/
+
+
+
+function Header() {
+  let width = window.innerWidth;
+ 
+ 
+  window.addEventListener("resize", () => {
+    width = window.innerWidth;
+    m.redraw();
+  });
+ 
+ 
+  return {
+    view: function () {
+      return width < 768 ? m(HeaderBurger) : m(HeaderNormal, [m(logo), m(menu), m(referencias)]);
+    },
+  };
+ }
+ 
 
 //================FIN HEADER =====================
 
@@ -210,7 +329,7 @@ function Card() {
         m("div", {
           style: {
             width: "30%",
-            height: "50vh",
+           // height: "50vh",
             textAlign: "center",
             border: "2px solid black",
             boxShadow: this.selectedIndex === index ? "0px 5px 5px green" : "none" // Sombra en la tarjeta seleccionada
@@ -250,8 +369,7 @@ function Card() {
           m("div", { // Descripción
             style: {
               width: "100%",
-              height: "10vh",
-              textAlign: "justify"
+              textAlign: "justify",
             }
           }, tarjeta.descripcion)
         ));
@@ -301,22 +419,146 @@ function tarjetaSelecionada() {
     }
   };
 }
+//=======================FIN MAIN=================================
+//================INICIO FOOTER===================================
+let datosFormulario = [
+  { nombre: 'Nombre: ', input: '' },
+  { nombre: 'Edad: ', input: '' },
+];
+
+let datosRespuestas = [
+  { nombre: 'Tu nombre es: ' },
+  { nombre: 'Tu edad es: ' },
+];
+function Formulario() {
+
+  return {
+
+    view: function () {
+      return m("div", { //padre formulario
+        style: {
+          display: "flex",
+          gap: "20%",
+          width: "80%",
+          height: "80%",
+          backgroundColor: "#303741",
+          color: "white"
+        }
+      },
+        m("div", {  //nivel1
+          style: {
+            width: "45%",
+            height: "100%",
+            borderRight: "2px solid black",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "1vh"
+          }
+        },
+          datosFormulario.map((inputFormulario, index) =>
+            m("div", {  //nivel2 contenedor de elementos del formulario dinámico
+              style: {
+                height: "20%",
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+              }
+            },
+              m("label", { //nivel3
+                style: {
+                  width: "20%",
+                  height: "100%",
+                  textAlign: "end",
+                }
+              },
+                inputFormulario.nombre),
+              m("input", {//nivel3
+                style: {
+                  height: "80%",                  
+                },
+                value: inputFormulario.input,
+                oninput: function (e) {
+                  datosFormulario[index].input = e.target.value;
+                }
+              },)
+            )
+
+          )
+        ),
+        m("div", {//nivel1
+          style:{
+            display: "flex",
+            flexDirection:"column",
+            justifyContent: "center",
+            width:"50%",
+            height:"100%",
+            gap:"1rem",
+            borderLeft: "2px solid black",
+          }
+        },
+        datosRespuestas.map((respuesta, pos) => m("div", { //nivel2
+          style: {
+            width: "100%",
+            height: "20%",
+            display: "flex",
+            justifyContent: "center",
+            gap:"10px"
+          }
+        },
+          m("label", //nivel3
+            {
+              style: {
+                height: "100%",
+                minWidth: "15%",
+                margin:"0",
+                padding:"0"
+              }
+            }, respuesta.nombre,
+          ),
+          m("p", { //nivel3
+            style: {
+              height: "100%",
+              width: "60%",
+              margin:"0",
+              padding:"0",
+            },
+          }, datosFormulario[pos]?.input || "")
+        ))
+
+      )
+        
+      )
+    }
+  }
+}
+
 
 function Footer() {
   return {
-    view: function () {
+    view: function (vnode) {
       return m("div", {
         style: {
           width: "100%",
           height: "20vh",
           backgroundColor: "#345573",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+
         }
-      });
+      }, vnode.children);
     }
   };
 }
 
-//---------- PÁGINA PRINCIPAL -----------
+
+//=================FIN FOOTER=====================================
+
+
+
+
+//============= PÁGINA PRINCIPAL ==============
 function Inicio() {
   let selectedCard = null; // Estado global para la tarjeta seleccionada
 
@@ -335,11 +577,12 @@ function Inicio() {
         flexWrap: "wrap",
         margin: "0 auto",
         padding: "0px",
-        overflowX: "scroll"
+        overflowX: "scroll",
+       // overflowY:"hidden"
       }
     },
       [
-        m(Header, [m(logo), m(menu), m(referencias)]),
+        m(Header),
         m("div", { // Encierra al Aside, Main, Aside
           style: {
             display: "flex",
@@ -350,11 +593,11 @@ function Inicio() {
           m(Aside),
           m(Main, [
             m(Card, { onCardSelect: handleCardSelect }), // Pasamos la función de selección a Card
-            m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada
+            m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada , el primer selectedCard es el atributo del componente tarjetaSeleccionada
           ]),
           m(Aside),
         ),
-        m(Footer)
+        m(Footer, [m(Formulario)])
       ]
     )
   };
@@ -363,3 +606,11 @@ function Inicio() {
 
 
 export { Inicio };
+
+
+
+
+
+
+ 
+ 
