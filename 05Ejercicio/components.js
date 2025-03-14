@@ -272,21 +272,19 @@ function HeaderBurger() {
 
 /************Fin menú hamburguesa*********/
 
-
+let widthPantalla = window.innerWidth; //ancho interior de la ventana en px
+ 
+ 
+window.addEventListener("resize", () => {
+  widthPantalla = window.innerWidth;
+  m.redraw();
+});
 
 function Header() {
-  let width = window.innerWidth;
- 
- 
-  window.addEventListener("resize", () => {
-    width = window.innerWidth;
-    m.redraw();
-  });
- 
  
   return {
     view: function () {
-      return width < 768 ? m(HeaderBurger) : m(HeaderNormal, [m(logo), m(menu), m(referencias)]);
+      return widthPantalla < 768 ? m(HeaderBurger) : m(HeaderNormal, [m(logo), m(menu), m(referencias)]);
     },
   };
  }
@@ -332,7 +330,10 @@ function Card() {
            // height: "50vh",
             textAlign: "center",
             border: "2px solid black",
-            boxShadow: this.selectedIndex === index ? "0px 5px 5px green" : "none" // Sombra en la tarjeta seleccionada
+            boxShadow: this.selectedIndex === index ? "0px 5px 5px green" : "none",// Sombra en la tarjeta seleccionada
+            flexShrink:"0",
+          flexGrow:"0",
+          flexBasis:"500px"
           },
           onclick: () => {
             this.selectedIndex = index; // Guarda el índice de la tarjeta seleccionada
@@ -390,7 +391,8 @@ function Main() {
           gap: "2vh",
           justifyContent: "center",
           marginTop: "5rem",
-          marginBottom: "5rem"
+          marginBottom: "5rem",
+          
         }
       },
         vnode.children
@@ -428,26 +430,27 @@ let datosFormulario = [
 
 let datosRespuestas = [
   { nombre: 'Tu nombre es: ' },
-  { nombre: 'Tu edad es: ' },
-];
+  { nombre: 'Tu edad es: ' }, ];
 function Formulario() {
 
   return {
-
-    view: function () {
-      return m("div", { //padre formulario
+    view: function (vnode) {
+      return m("div", { //padre
         style: {
           display: "flex",
-          gap: "20%",
+          gap:"10px",
           width: "80%",
-          height: "80%",
+          minHeight:"80%",
           backgroundColor: "#303741",
-          color: "white"
+          color: "white",
+         // flexWrap:"wrap",
+          alignItems:"center"
         }
       },
-        m("div", {  //nivel1
+        m("div", {  //nivel1  panel izquierda
           style: {
-            width: "45%",
+            // width:`${vnode.attrs.tamaño}||"50%"`,
+            width:`${vnode.attrs.tamanno}`,
             height: "100%",
             borderRight: "2px solid black",
             display: "flex",
@@ -456,28 +459,27 @@ function Formulario() {
             gap: "1vh"
           }
         },
-          datosFormulario.map((inputFormulario, index) =>
+          datosFormulario.map((i, index) =>
             m("div", {  //nivel2 contenedor de elementos del formulario dinámico
               style: {
                 height: "20%",
                 display: "flex",
-                justifyContent: "center",
                 gap: "10px",
               }
             },
               m("label", { //nivel3
                 style: {
-                  width: "20%",
+                  minWidth: "30%",
                   height: "100%",
                   textAlign: "end",
                 }
               },
-                inputFormulario.nombre),
+                i.nombre),
               m("input", {//nivel3
                 style: {
                   height: "80%",                  
                 },
-                value: inputFormulario.input,
+                value: i.input,
                 oninput: function (e) {
                   datosFormulario[index].input = e.target.value;
                 }
@@ -486,15 +488,14 @@ function Formulario() {
 
           )
         ),
-        m("div", {//nivel1
+        m("div", {//nivel1  panel derecha
           style:{
             display: "flex",
             flexDirection:"column",
-            justifyContent: "center",
-            width:"50%",
+            justifyContent: "center",    
+            width:`${vnode.attrs.tamanno}`,
             height:"100%",
-            gap:"1rem",
-            borderLeft: "2px solid black",
+            gap:"1vh"
           }
         },
         datosRespuestas.map((respuesta, pos) => m("div", { //nivel2
@@ -510,7 +511,7 @@ function Formulario() {
             {
               style: {
                 height: "100%",
-                minWidth: "15%",
+                minWidth: "30%",
                 margin:"0",
                 padding:"0"
               }
@@ -540,7 +541,7 @@ function Footer() {
       return m("div", {
         style: {
           width: "100%",
-          height: "20vh",
+          minHeight: "20vh",
           backgroundColor: "#345573",
           display: "flex",
           justifyContent: "center",
@@ -552,13 +553,12 @@ function Footer() {
   };
 }
 
-
 //=================FIN FOOTER=====================================
 
 
 
 
-//============= PÁGINA PRINCIPAL ==============
+//============= PÁGINA INICIO ==============
 function Inicio() {
   let selectedCard = null; // Estado global para la tarjeta seleccionada
 
@@ -578,7 +578,7 @@ function Inicio() {
         margin: "0 auto",
         padding: "0px",
         overflowX: "scroll",
-       // overflowY:"hidden"
+        minWidth:"740px"
       }
     },
       [
@@ -587,7 +587,8 @@ function Inicio() {
           style: {
             display: "flex",
             width: "100%",
-            flexWrap: "wrap",
+            flexWrap: "wrap", 
+            minWidth:"693px"
           }
         },
           m(Aside),
@@ -597,13 +598,18 @@ function Inicio() {
           ]),
           m(Aside),
         ),
-        m(Footer, [m(Formulario)])
+        m(Footer, [m(Formulario,{tamanno:widthPantalla < 750? "100%":"49%"})])
       ]
     )
   };
 }
 
+//============= FIN PÁGINA INICIO ==============
 
+//============= PÁGINA CONTACTO ==============
+
+
+//============= FIN PÁGINA CONTACTO ==============
 
 export { Inicio };
 
