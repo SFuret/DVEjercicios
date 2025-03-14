@@ -567,12 +567,8 @@ function Footer() {
 
 //=================FIN FOOTER=====================================
 
-
-
-
 //============= PÁGINA INICIO ==============
 function Layout() {
-
   return {
     oncreate: () => {
       window.scrollTo(0, 0);
@@ -584,7 +580,7 @@ function Layout() {
         margin: "0 auto",
         padding: "0px",
         overflowX: "scroll",
-        minWidth:"740px"
+        minWidth: "740px"
       }
     },
       [
@@ -594,12 +590,14 @@ function Layout() {
             display: "flex",
             width: "100%",
             flexWrap: "wrap", 
-            minWidth:"693px"
+            minWidth: "693px"
           }
         },
-          vnode.children
+          vnode.children // Insertar los elementos hijos aquí
         ),
-        m(Footer, [m(Formulario,{tamanno:widthPantalla < 750? "100%":"49%"})])
+        m(Footer, [
+          m(Formulario, { tamanno: window.innerWidth < 750 ? "100%" : "49%" })
+        ])
       ]
     )
   };
@@ -610,42 +608,20 @@ function Layout() {
 //============= PÁGINA CONTACTO ==============
 function Contacto() {
   return {
-    view: () => m("div", {
-      style: {
-        display: "flex",
-        flexWrap: "wrap",
-        margin: "0 auto",
-        padding: "0px",
-        overflowX: "scroll",
-        minWidth: "740px"
-      }
-    },
-      [
-        m(Header), // El header sigue siendo el mismo
-        m("div", { // Aquí se coloca el contenido principal de Contacto
-          style: {
-            display: "flex",
-            width: "100%",
-            flexWrap: "wrap", 
-            minWidth:"693px"
-          }
-        },
-          m(Aside),
-          m(Main, [
-            m("div", { style: { width: "100%", textAlign: "center" } }, "Esta es la página de Contacto") // Aquí tu contenido de Contacto
-          ]),
-          m(Aside),
-        ),
-        m(Footer)
-      ]
-    )
+    view: () => m("div", [
+      m(Aside),
+      m(Main, [
+        m("div", { style: { width: "100%", textAlign: "center" } }, "Esta es la página de Contacto") // Aquí tu contenido de Contacto
+      ]),
+      m(Aside),
+    ])
   };
 }
 
 //============= FIN PÁGINA CONTACTO ==============
 
-
-function Inicio(){
+//============= PÁGINA INICIO ==============
+function Inicio() {
   let selectedCard = null; // Estado global para la tarjeta seleccionada
 
   function handleCardSelect(tarjeta) {
@@ -654,22 +630,20 @@ function Inicio(){
   }
 
   return {
-    view: function(){
-      return m(m(Aside),
-      m(Main, [
-        m(Card, { onCardSelect: handleCardSelect }), // Pasamos la función de selección a Card
-        m(tarjetaSelecionada, { selectedCard: selectedCard }) // Pasamos la tarjeta seleccionada a tarjetaSelecionada , el primer selectedCard es el atributo del componente tarjetaSeleccionada
-      ]),
-      m(Aside),)
+    view: function () {
+      return m("div", [
+        m(Aside),
+        m(Main, [
+          m(Card, { onCardSelect: handleCardSelect }), // Pasamos la función de selección a Card
+          selectedCard ? m(tarjetaSelecionada, { selectedCard: selectedCard }) : null // Solo muestra tarjetaSelecionada si hay una tarjeta seleccionada
+        ]),
+        m(Aside)
+      ]);
     }
-  }
+  };
 }
-export { Layout };
-export { Inicio };
-export { Contacto };
 
+//============= FIN PÁGINA INICIO ==============
 
-
-
- 
- 
+// Exportar los componentes
+export { Layout, Inicio, Contacto };
