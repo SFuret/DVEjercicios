@@ -410,7 +410,6 @@ let tarjetas = [
   },
 ];
 
-
 function Card() {
   return {
     selectedIndex: null, // Estado para almacenar la tarjeta seleccionada, es una propiedad de la tarjeta
@@ -807,20 +806,64 @@ function Inicio() {
 }
 
 //============= PÁGINA CONTACTO ==============
-function Contacto() {
+/*function Contacto() {
+  let data = {}; // Variable para almacenar los datos
+
   return {
+    oninit: () => {
+      m.request({
+        method: "GET",
+        url: 'ficherosExternos/quienessomos.json' // ruta del json
+      }).then(response => {
+        data = response;
+        console.log(data)
+        m.redraw(); // Forzar redibujado tras la carga de datos
+      });
+    },
     view: () => [
       m(Main, [
         m(
           "div",
-          { style: { width: "100%", textAlign: "center" } },
+          { style: { width: "100%", backgroundColor:"blue" } },
           
-        ), // Aquí tu contenido de Contacto
+        ), m("div", {style:{width:"100%", height:"50%", backgroundColor:"red"}},`${data.quienes_somos}`)
       ]),
     ],
   };
 }
+*/
 
+function Contacto() {
+  const contacto = [
+    {
+      quienes_somos:
+        "En Zapatos DC, creemos que cada paso cuenta. Desde nuestros inicios, nos hemos dedicado a ofrecer calzado de calidad, combinando comodidad, estilo y durabilidad para acompañarte en cada momento de tu vida. Nuestro compromiso es brindarte una experiencia única, con una atención cercana y personalizada. Trabajamos con las mejores marcas y materiales, asegurando que encuentres el par perfecto para cada ocasión. Más que una zapatería, somos una familia apasionada por el mundo del calzado, donde cada cliente es parte de nuestra historia. ¡Déjanos ser el inicio de tus mejores pasos!",
+    },
+    { direccion:"Calle Principal 123, Ciudad, País" },
+    { telefono: "+123 456 7890" },
+    { email: "contacto@zapateria.com" },
+  ];
+
+  return {
+    view: () =>
+      m(Main, [
+        m("h1", "Nuestra Historia"),
+        m(
+          "div",
+          { style: { width: "100%", textAlign: "center" } },
+          contacto[0].quienes_somos
+        ),
+        m(
+          "div",
+          { style: { border:"2px solid black", marginTop:"5vh", marginLeft:"50%", padding:"2vh" } },
+          m("h4", "Contacto"),
+          m("p", contacto[1].direccion),
+          m("p", contacto[2].telefono),
+          m("p", contacto[3].email)
+        ),
+      ]),
+  };
+}
 //============= PÁGINA TARJETA ==============
 
 function Tarjeta() {
@@ -837,27 +880,39 @@ function Tarjeta() {
         );
       }
 
-      return [m(
-        "div",
-        { style: {width: "80%", height: "100%",  display:"flex"} },      
-        m("div",{style:{
-          display:"flex",
-          justifyContent:"center",
-          alignItems:"center",
-          width:"100%",
-          flexWrap:"wrap",
-          backgroundColor:"black",
-          opacity:"90%",
-          color:"white"
-        }}, [
-        m("h1", {style:{width:"100%", textAlign:"center"}},tarjetaSeleccionada.titulo), // Mostrar título de la tarjeta
-        m("img", {
-          src: tarjetaSeleccionada.urlImagen,
-          style: { width: "50%" },
-        }), // Mostrar imagen
-        m("p", tarjetaSeleccionada.descripcion) // Mostrar descripción*/
-        ]),
-      )]
+      return [
+        m(
+          "div",
+          { style: { width: "80%", height: "100%", display: "flex" } },
+          m(
+            "div",
+            {
+              style: {
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                backgroundColor: "black",
+                opacity: "90%",
+                color: "white",
+              },
+            },
+            [
+              m(
+                "h1",
+                { style: { width: "100%", textAlign: "center" } },
+                tarjetaSeleccionada.titulo
+              ), // Mostrar título de la tarjeta
+              m("img", {
+                src: tarjetaSeleccionada.urlImagen,
+                style: { width: "50%" },
+              }), // Mostrar imagen
+              m("p", tarjetaSeleccionada.descripcion), // Mostrar descripción*/
+            ]
+          )
+        ),
+      ];
     },
   };
 }
