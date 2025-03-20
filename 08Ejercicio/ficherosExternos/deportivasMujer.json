@@ -1,0 +1,45 @@
+[
+    {
+      "id": 1,
+      "marca": "Nike",
+      "modelo": "Air Zoom Pegasus 40",
+      "descripcion": "Zapatillas ligeras y cómodas, ideales para correr largas distancias con amortiguación reactiva."
+    },
+    {
+      "id": 2,
+      "marca": "Adidas",
+      "modelo": "Ultraboost Light",
+      "descripcion": "Diseñadas para un ajuste cómodo con una suela Boost ultraligera que ofrece un retorno de energía excepcional."
+    },
+    {
+      "id": 3,
+      "marca": "Puma",
+      "modelo": "Deviate Nitro 2",
+      "descripcion": "Zapatillas de running con tecnología Nitro Foam para una mejor reactividad y velocidad."
+    },
+    {
+      "id": 4,
+      "marca": "Reebok",
+      "modelo": "Nano X3",
+      "descripcion": "Perfectas para entrenamientos intensos, ofrecen estabilidad y flexibilidad en cada movimiento."
+    },
+    {
+      "id": 5,
+      "marca": "New Balance",
+      "modelo": "Fresh Foam X 1080v13",
+      "descripcion": "Increíble amortiguación y confort para corredores que buscan una pisada suave y fluida."
+    },
+    {
+      "id": 6,
+      "marca": "Asics",
+      "modelo": "Gel-Nimbus 25",
+      "descripcion": "Máxima comodidad con tecnología GEL y una suela diseñada para absorber impactos de manera eficiente."
+    },
+    {
+      "id": 7,
+      "marca": "Under Armour",
+      "modelo": "HOVR Sonic 5",
+      "descripcion": "Zapatillas con ajuste preciso y suela HOVR que reduce el impacto en cada paso."
+    }
+  ]
+  

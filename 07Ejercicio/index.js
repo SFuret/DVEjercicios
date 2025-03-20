@@ -8,7 +8,7 @@ const routes = {
   "/Inicio": { view: () => m(Layout,[m(Inicio)]) },
   "/Contacto": { view: () =>  m(Layout,[m(Contacto)]) }, // Nueva ruta para la página de contacto
   "/Tarjeta/:id": { view: () => m(Layout, [m(Tarjeta)]) },// Nueva ruta para la página de contacto
- // "/Tarjeta":{view:()=>m(Layout,[m(Tarjeta,{id})])},
+
 };
 
 m.route(document.body, "/Inicio", routes);
