@@ -1,0 +1,17 @@
+[
+    {
+        "user":"sandra",
+        "pass":"sandra",
+        "rol":"admin"
+    },
+    {
+        "user":"tego",
+        "pass":"tego",
+        "rol":"camarero"
+    },
+    {
+        "user":"yoa",
+        "pass":"yoa",
+        "rol":"cajero"
+    }
+]

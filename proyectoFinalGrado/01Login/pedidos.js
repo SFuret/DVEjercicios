@@ -6,150 +6,160 @@ window.addEventListener("resize", () => {
   m.redraw();
 })
 
-//==========PRINCIPAL PEDIDOS(1)==================
-function PrincipalPedidos() {
-  return {
-    view: function () {
-      return m("div", { //fondo principal
-        style: {
-          backgroundColor: "black",
-          display: "flex",
-          width: "100%",
-          height: "100vh",
-          position: "relative",
-        }
-      }, m(
-        "div", { //capa superior con opacidad
-        style: {
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          backgroundColor: "black",
-          zIndex: "0",
-          opacity: "60%",
-          display: "flex",
-          alignItems: "center"
-        }
+//==========LOGIN==================
+/*function verificarLogin() {
+  const usuarioEncontrado = Login.usuarios.find(user =>
+      user.user === Login.nombre && user.pass === Login.contrasena
+  );
+
+  if (usuarioEncontrado) {
+      alert(`✅ Login exitoso. Rol: ${usuarioEncontrado.rol}`);
+  } else {
+      alert("❌ Usuario o contraseña incorrectos");
+  }
+}*/
+
+function Login(){
+return{
+    nombre: "",
+    contrasena: "",
+    usuarios: [],
+
+    oninit: function(){
+      m.request({
+        method: "GET",
+        url: "json/usuarios.json" 
+    }).then(function (respuesta) {
+        Login.usuarios = respuesta; 
+       // console.log("Usuarios cargados:", Login.usuarios);
+    }).catch(function (error) {
+        console.error("Error al obtener usuarios:", error);
+    });
+    },
+   view: function () {
+      return m("div", { 
+          style: {
+              backgroundColor: "black",
+              display: "flex",
+              width: "100%",
+              height: "100vh",
+              position: "relative"
+          }
+      }, 
+      m("div", { 
+          style: {
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              backgroundColor: "black",
+              zIndex: "0",
+              opacity: "60%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+          }
       },
-        m("div",//contenedor del campo central
-          {
-            style: {
+      m("div", { 
+          style: {
               width: "35%",
               height: "80%",
               backgroundColor: "gray",
               borderRadius: "20px",
-            }
+              padding: "20px",
+          }
+      },
+      m("div", { 
+          style: {
+              width: "90%",
+              height: "25%",
+              display: "flex",
+              alignItems: "center",
+              marginTop: "5%"
+          }
+      },
+      m("img", { 
+          src: "img/logo.png",
+          style: {
+              width: "30%",
+              height: "auto"
+          }
+      })),
+      m("form", {
+          onsubmit: function (e) {
+          e.preventDefault();
+          const usuarioEncontrado = Login.usuarios.find(user =>
+            user.user === Login.nombre && user.pass === Login.contrasena
+          );
+        
+          if (usuarioEncontrado) {
+              alert(`✅ Login exitoso. Rol: ${usuarioEncontrado.rol}`);
+          } else {
+              alert("❌ Usuario o contraseña incorrectos");
+          }
           },
-          m("div",   //contenedor del logo
-            {
-              style: {
-                width: "90%",
-                height: "25%",
-                display: "flex",
-                alignItems: "center",
-                marginTop: "5%",
-                backgroundColor: tamanoPantalla < 1000 ? "white" : null
-              }
-            },
-            m("img", {       //logo
-              src: "img/logo.png",
-
-              style: {
-                width: tamanoPantalla < 1200 ? "40%" : "30%",
-                height: tamanoPantalla < 800 ? "80%" : "100%",
-
-              }
-            })
-
-          ),
-          m("form", {//contenedor del formulario
-            style: {
+          style: {
               height: "70%",
               width: "60%",
-              display:"flex",
-              flexDirection:"column",
-              justifyContent:"center",
-              gap:"2vh"
-             // backgroundColor: "red"
-            }
-          },
-            m("div", {
-              style: {
-              width:"100%",
-              //backgroundColor:"blue",
-              display:"flex",
-              //alignItems:"center",
-              justifyContent:"start",
-              flexWrap:"wrap"
-              }
-            }, m("label",{
-              style:{
-                width:"100%",
-               // textAlign:"center"
-              }
-            },"Nombre"),
-            m("input", {
-              style: {
-                width: "100%",
-                height: "5vh"
-              }
-            },)
-            ),
-            m("div", {
-              style: {
-              width:"100%",
-             // backgroundColor:"blue",
-              display:"flex",
-              //alignItems:"center"
-               justifyContent:"start",
-              flexWrap:"wrap"
-              }
-            }, m("label",{
-              style:{
-                 width:"100%",
-              //  textAlign:"center"
-              }
-            },"Contraseña"),
-            m("input", {
-              style: {
-                width: "100%",
-                height: "5vh"
-              }
-            },)
-            ),
-            m("button",{
-              style:{
-                width:"100%",
-                height:"5vh",
-                borderRadius:"5px",
-                fontWeight:"bolder",
-                border:"none",
-                backgroundColor:"black",
-                color:"white",
-                background:"linear-gradient(50deg, #D96704, #40240C)"
-              }
-            },"Registrarse")
-          )
-        )
-      ),
-        m("img", {  //imagen de fondo
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: "2vh"
+          }
+      },
+      m("div", {
+          style: {
+              width: "100%",
+              display: "flex",
+              justifyContent: "start",
+              flexWrap: "wrap"
+          }
+      }, 
+      m("label", { style: { width: "100%" } }, "Nombre"),
+      m("input", {
+          type: "text",
+          oninput: function (e) { Login.nombre = e.target.value; },
+          style: { width: "100%", height: "5vh" }
+      })),
+      m("div", {
+          style: {
+              width: "100%",
+              display: "flex",
+              justifyContent: "start",
+              flexWrap: "wrap"
+          }
+      }, 
+      m("label", { style: { width: "100%" } }, "Contraseña"),
+      m("input", {
+          type: "password",
+          oninput: function (e) { Login.contrasena = e.target.value; },
+          style: { width: "100%", height: "5vh" }
+      })),
+      m("button", {
+          type: "submit",
+          style: {
+              width: "100%",
+              height: "5vh",
+              borderRadius: "5px",
+              fontWeight: "bolder",
+              border: "none",
+              backgroundColor: "black",
+              color: "white",
+              background: "linear-gradient(50deg, #D96704, #40240C)"
+          }
+      }, "Iniciar Sesión")
+      ),     
+      )),
+      m("img", { 
           src: "img/fondo.jpg",
           style: {
-            width: "100%",
-            height: "100%",
-            // flexBasis: "1280px",
-            // flexShrink: "1",
-            // flexGrow: "0"
-            flex: "0 1 1280px",
-
+              width: "100%",
+              height: "100%",
+              flex: "0 1 1280px"
           }
-        }),
-
-      )
-    }
+      }));
   }
 }
-
+};
 //===================GENERALES========================
 function Inicio() {
   return {
@@ -162,7 +172,7 @@ function Inicio() {
           display: "flex",
         }
       }, [
-      m(PrincipalPedidos)
+      m(Login)
     ])
   };
 }
