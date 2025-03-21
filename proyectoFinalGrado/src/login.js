@@ -52,11 +52,11 @@ return{
               height: "100%",
               position: "absolute",
               backgroundColor: "black",
-              zIndex: "0",
               opacity: "60%",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              zIndex:"1"
           }
       },
       m("div", { 
@@ -160,20 +160,4 @@ return{
   }
 }
 };
-//===================GENERALES========================
-function Inicio() {
-  return {
-    oncreate: () => {
-      window.scrollTo(0, 0);
-    },
-    view: () => m("div", //es el body
-      {
-        style: {
-          display: "flex",
-        }
-      }, [
-      m(Login)
-    ])
-  };
-}
-export { Inicio };
+export {Login};
