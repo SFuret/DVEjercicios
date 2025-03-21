@@ -766,11 +766,9 @@ function Layout() {
                 justifyContent: "center",
               },
             },
-            //widthPantalla > 750 ? m(Aside) : null,
             widthPantalla<750?null:m(Aside),
-            vnode.children, // Insertar los elementos hijos aquí
+            vnode.children, 
             widthPantalla<750?null:m(Aside),
-            //widthPantalla > 750 ? m(Aside) : null
           ),
           m(Footer, [
             m(Formulario, {
@@ -807,32 +805,7 @@ function Inicio() {
 }
 
 //============= PÁGINA CONTACTO ==============
-/*function Contacto() {
-  let data = {}; // Variable para almacenar los datos
 
-  return {
-    oninit: () => {
-      m.request({
-        method: "GET",
-        url: 'ficherosExternos/quienessomos.json' // ruta del json
-      }).then(response => {
-        data = response;
-        console.log(data)
-        m.redraw(); // Forzar redibujado tras la carga de datos
-      });
-    },
-    view: () => [
-      m(Main, [
-        m(
-          "div",
-          { style: { width: "100%", backgroundColor:"blue" } },
-          
-        ), m("div", {style:{width:"100%", height:"50%", backgroundColor:"red"}},`${data.quienes_somos}`)
-      ]),
-    ],
-  };
-}
-*/
 
 function Contacto() {
   const contacto = [
